@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  status: MyText
+  pst: 9.99
+  gst: 9.99
+  hst: 9.99
+
+two:
+  status: MyText
+  pst: 9.99
+  gst: 9.99
+  hst: 9.99

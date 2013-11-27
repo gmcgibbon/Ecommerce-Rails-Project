@@ -1,0 +1,9 @@
+%h2 Games
+%ul
+  - @games.each do |game|
+    %li= link_to game.name, game
+
+%h2 Platforms
+%ul
+  - @platforms.each do |platform|
+    %li= link_to platform.name, platform
