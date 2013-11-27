@@ -13,8 +13,9 @@ require 'money'
 
 # API documentation here: https://www.semantics3.com/docs/
 # Get keys here: https://www.semantics3.com/
-API_KEY    = ""
-API_SECRET = ""
+# API_KEY    = ""
+# API_SECRET = ""
+load "#{Rails.root}/db/scrape/api_keys.rb"
 
 # Add pan to String class
 class String

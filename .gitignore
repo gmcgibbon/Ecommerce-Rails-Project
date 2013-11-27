@@ -19,3 +19,4 @@
 /public/uploads/tmp/*
 /public/uploads/games/*
 /activeadmin/*
+/db/scrape/api-keys.rb
