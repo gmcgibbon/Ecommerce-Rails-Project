@@ -79,13 +79,24 @@ img.logo
 
 section
 {
-    width:98%;
     margin:10px auto;
     padding:15px;
     border-left:15px solid #555;
     border-right:15px solid #555;
 }
 
+div.display
+{
+    margin:0px auto;
+    background:#012;
+    border:#111 solid 8px;
+}
+
+nav.pagination
+{
+    text-align:center;
+    display:block;
+}
 
 header
 {
@@ -107,8 +118,6 @@ header
         top:5px;
     }
 }
-
-
 
 
 footer
@@ -140,6 +149,7 @@ footer
     div.copy
     {
         float:left;
+        padding-left:20px;
 
     }
 }

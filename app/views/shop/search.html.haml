@@ -2,4 +2,8 @@
 .display
 	- if @games.empty?
 		%p= "Bogus, \"#{params[:keywords]}\" returned no results!"
-	= render @games
+	- else
+		%p= "Displaying #{@count} results"
+		.display
+			= render @games
+		= paginate @games, :params => {authenticity_token: nil, utf8: nil}
