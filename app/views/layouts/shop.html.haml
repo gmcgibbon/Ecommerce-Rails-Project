@@ -1,13 +1,14 @@
 !!! 5
 %html
   %head
-    %title Brick With Buttons - Store
+    %title Brick With Buttons - Shop
     = stylesheet_link_tag    "shop", :media => "all"
-    = javascript_include_tag "shop"
+    = stylesheet_link_tag    "bootstrap", :media => "all"
+    = stylesheet_link_tag    "bootpolish", :media => "all"
+    = javascript_include_tag "application"
     = csrf_meta_tags
   %body
-    %div.container
-      = render :partial => "header"
-      %section.content
-        = yield
-      = render :partial => "footer"
+    = render :partial => "layouts/header"
+    %section#content
+      = yield
+    = render :partial => "layouts/footer"

@@ -1,0 +1,135 @@
+//Imports
+
+@import "compass/css3";
+
+//Reset
+
+*
+{
+    font-family:"com4t";
+}
+
+img
+{
+    border: none;
+}
+
+table
+{
+    border-collapse: collapse;
+}
+
+//Compass Universals
+
+@include font-face("com4t", font-files( 
+        "com4t-webfont.eot", 
+        "com4t-webfont.eot?#iefix",
+        "com4t-webfont.woff",
+        "com4t-webfont.ttf",
+        "com4t-webfont.svg#com4t-regular"
+    )
+);
+
+@include font-face("league", font-files( 
+        "leaguegothic-webfont.eot", 
+        "leaguegothic-webfont.eot?#iefix",
+        "leaguegothic-webfont.woff",
+        "leaguegothic-webfont.ttf",
+        "leaguegothic-webfont.svg#league-regular"
+    )
+);
+
+@include font-face("munro", font-files( 
+        "munro-webfont.eot", 
+        "munro-webfont.eot?#iefix",
+        "munro-webfont.woff",
+        "munro-webfont.ttf",
+        "munro-webfont.svg#munro-regular"
+    )
+);
+
+
+#{headings(all)}
+{
+    
+    font-family: "league";
+}
+
+h1
+{
+    
+    font-family: "munro";
+}
+
+h2
+{
+    text-align:center;
+}
+
+img.logo
+{
+    width:auto;
+    height:60px;
+}
+
+section
+{
+    width:98%;
+    margin:10px auto;
+    padding:15px;
+    border-left:15px solid #555;
+    border-right:15px solid #555;
+}
+
+
+header
+{
+    position:fixed;
+    top:0px;
+    display:block;
+
+    #title
+    {
+        display:inline;
+        font-size:22px;
+        padding-left:75px;
+        padding-right:25px;
+    }
+
+    img.logo
+    {
+        position:absolute;
+        top:5px;
+    }
+}
+
+
+
+
+footer
+{
+    padding-top:10px;
+    border-top:#333 solid 3px;
+    background:#222;
+    position:relative;
+    top:10px;
+
+    a img.logo
+    {
+        display:block;
+        margin:60px auto;
+        padding-bottom:10px;
+    }
+
+    p
+    {
+        font-size:20px;
+        font-family:"league";
+    }
+
+    div.copy
+    {
+        float:left;
+
+    }
+}

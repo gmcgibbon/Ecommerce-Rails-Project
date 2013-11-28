@@ -214,6 +214,7 @@ DEPENDENCIES
   haml-rails
   jquery-rails
   json
+  kaminari
   mechanize
   money
   rails (= 3.2.13)

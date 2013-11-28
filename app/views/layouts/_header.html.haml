@@ -1,0 +1,39 @@
+%header.navbar.navbar-default
+	.navbar-header
+		%button.navbar-toggle{"data-target" => ".navbar-responsive-collapse", "data-toggle" => "collapse", type: "button"}
+			%span.icon-bar
+			%span.icon-bar
+			%span.icon-bar
+		= link_to root_path, {:class => "navbar-brand"} do
+			= image_tag("logo.png", :class => "logo", alt: "Brick With Buttons Logo")
+			%h1#title Brick With Buttons
+	.navbar-collapse.collapse.navbar-responsive-collapse
+		%ul.nav.navbar-nav.navbar-left
+			%li.dropdown
+				%a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
+					Products
+					%b.caret
+				%ul.dropdown-menu
+					%li.divider
+					%li.dropdown-header Games
+					%li
+						%a{href: "#"} By Platform
+					%li
+						%a{href: "#"} By Rating
+					%li
+						%a{href: "#"} By Price
+					%li
+						%a{href: "#"} By Date Added
+		%ul.nav.navbar-nav.navbar-right
+			%li.dropdown
+				%a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
+					Cart
+					%b.caret
+				%ul.dropdown-menu
+					%li.divider
+					%li.dropdown-header Items
+					%li.default
+						%a{href: "#", title: "Click \"Add to cart\" on an item"} None
+		%form.navbar-form.navbar-right#search
+			%input.form-control.col-lg-8{placeholder: "Search...", type: "text"}
+		

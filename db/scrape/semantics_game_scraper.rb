@@ -120,7 +120,7 @@ class GameScraper
           # store each value for result
           name         = rset["name"]
           price        = Money.new(rset["price"].sub(".",""),"USD").exchange_to("CAD")
-          genre        = rset["genre"]
+          genre        = rset["features"]["Genre"]
           developer    = rset["features"]["Developer"]
           rating       = rset["features"]["ESRB Rating"]
           reseller_url = rset["sitedetails"].each.reduce(Hash.new, :merge)["url"] 

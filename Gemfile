@@ -30,6 +30,7 @@ gem 'json'
 gem 'mechanize'
 gem 'semantics3'
 gem 'money'
+gem 'kaminari'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
