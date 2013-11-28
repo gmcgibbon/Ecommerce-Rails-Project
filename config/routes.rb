@@ -3,6 +3,7 @@ BrickWithButtons::Application.routes.draw do
   ActiveAdmin.routes(self)
 
   root :to => 'shop#index', :via => :get
+  match "/" => "shop#search", :as => "search", :via => :post
   match "/games/:id" => "game#show", :as => "game", :via => :get
   match "/platforms/:id" => "platform#show", :as => "platform", :via => :get
   # match "/"    => "application#create",  :as => "create_tweet", :via => :post

@@ -34,6 +34,6 @@
 					%li.dropdown-header Items
 					%li.default
 						%a{href: "#", title: "Click \"Add to cart\" on an item"} None
-		%form.navbar-form.navbar-right#search
-			%input.form-control.col-lg-8{placeholder: "Search...", type: "text"}
+		= form_tag({:controller => "shop", :action => "search"}, {:class => "navbar-form navbar-right"}) do
+			= text_field_tag :keywords, "", {:class => "form-control col-lg-8", placeholder: "Search...", type: "text"}
 		

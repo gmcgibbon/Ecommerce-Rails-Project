@@ -1,0 +1,5 @@
+%h2 Search Results
+.display
+	- if @games.empty?
+		%p= "Bogus, \"#{params[:keywords]}\" returned no results!"
+	= render @games
