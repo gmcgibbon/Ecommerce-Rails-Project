@@ -1,0 +1,7 @@
+.game
+	%p= game.name
+	%p= game.platform.name
+	= link_to game do
+		= image_tag game.box_art
+	%p= number_to_currency game.price
+	%button.btn.btn-default.btn-block Add to cart
