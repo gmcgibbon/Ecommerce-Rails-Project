@@ -1,6 +1,6 @@
 class ShopController < ApplicationController
 	def index
-		@games = Game.order(:name)
+		@games = Game.order(:name).limit(5)
 		@games = Kaminari.paginate_array(@games).page(params[:page]).per(5)
 		@platforms = Platform.order(:name)
 	end
@@ -18,6 +18,18 @@ class ShopController < ApplicationController
 
 		@count = @games.count
 	end
-	def paginate
+	def shop_platform
+		@platforms = Platform.all
+		@platform = Platform.where("name LIKE ?", "%#{params[:refined]}%").first
+	end
+	def shop_rating
+		@ratings = Games.uniq.pluck(:rating)
+		@games = Game.where("rating LIKE ?", "%#{params[:refined]}%")
+	end
+	def shop_price
+		@games = Game.where("price LIKE ?", "%#{params[:refined]}%")
+	end
+	def shop_date
+		@games = Game.where("date LIKE ?", "%#{params[:refined]}%")
 	end
 end

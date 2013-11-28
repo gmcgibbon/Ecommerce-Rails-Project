@@ -1,3 +1,4 @@
+
 @scraper = GameScraper.new
 
 def add_game title, platform
@@ -13,14 +14,12 @@ def add_game title, platform
     uri = game_hash[:box_art]
 
     # cap remote file
-    file = open("#{title.pan}.jpg", 'wb') do |file|
+    tmp_file = File.open("#{Rails.root}/tmp/#{title.pan}.jpg", 'w+b') do |file|
       file << open(uri).read
     end
-    # cap local tmp file
-    tmp_file = File.open(File.join(Rails.root, "#{title.pan}.jpg"))
 
     # adjust values
-    game_hash[:box_art] = tmp_file
+    game_hash[:box_art] = File.open(File.join("#{Rails.root}/tmp", "#{title.pan}.jpg"))
     game_hash[:name] = title
     game_hash[:stock_quantity] = Random.rand(10 .. 65)
     #E10 fix
@@ -31,14 +30,17 @@ def add_game title, platform
     # game obj
     game = Platform.where(name: platform).first.games.build(game_hash)
 
-    if game.save
+    success = game.save
+
+    if success
       puts "Added successfully!"
     else
       puts "Data could not be added to DB, does the game already exist?"
       throw # rejected by DB, invalid
     end
-  rescue
+  rescue => e
     puts "Could not be added. :("
+      puts e
   end
   puts
 end

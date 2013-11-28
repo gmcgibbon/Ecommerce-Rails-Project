@@ -14,24 +14,24 @@
 					Products
 					%b.caret
 				%ul.dropdown-menu
+					%li.dropdown-header Shop for Games by:
 					%li.divider
-					%li.dropdown-header Games
 					%li
-						%a{href: "#"} By Platform
+						%a{href: "#"} Platform
 					%li
-						%a{href: "#"} By Rating
+						%a{href: "#"} Rating
 					%li
-						%a{href: "#"} By Price
+						%a{href: "#"} Price
 					%li
-						%a{href: "#"} By Date Added
+						%a{href: "#"} Date Added
 		%ul.nav.navbar-nav.navbar-right
 			%li.dropdown
 				%a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
 					Cart
 					%b.caret
 				%ul.dropdown-menu
+					%li.dropdown-header Current Items:
 					%li.divider
-					%li.dropdown-header Items
 					%li.default
 						%a{href: "#", title: "Click \"Add to cart\" on an item"} None
 		= form_tag({:controller => "shop", :action => "search"}, {:class => "navbar-form navbar-right"}) do
