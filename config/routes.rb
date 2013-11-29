@@ -4,6 +4,8 @@ BrickWithButtons::Application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
+  mount Ckeditor::Engine => "/ckeditor"
+
   root :to => 'shop#index', :via => :get
   match "/search" => "shop#search", :as => "search"
   match "/games/:id" => "game#show", :as => "game", :via => :get

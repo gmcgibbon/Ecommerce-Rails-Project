@@ -231,5 +231,7 @@ ActiveAdmin.setup do |config|
   # You can enable or disable them for all resources here.
   #
   # config.filters = true
+  
+  config.register_javascript 'ckeditor/init.js'
 
 end

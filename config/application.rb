@@ -61,6 +61,9 @@ module BrickWithButtons
 
     # Add the fonts path
     config.assets.paths << "#{Rails.root}/app/assets/fonts"
+
+    # Add CKEditor
+    config.autoload_paths += %W(#{config.root}/app/models/ckeditor)
     
   end
 end
