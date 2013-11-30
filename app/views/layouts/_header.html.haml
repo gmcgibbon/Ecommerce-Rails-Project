@@ -17,13 +17,24 @@
 					%li.dropdown-header Shop for Games by:
 					%li.divider
 					%li
-						%a{href: "#"} Platform
+						=link_to "Platform", :controller => "shop", :action => "shop_platform"
 					%li
-						%a{href: "#"} Rating
+						=link_to "ESRB Rating", :controller => "shop", :action => "shop_rating"
 					%li
-						%a{href: "#"} Price
+						=link_to "Price", :controller => "shop", :action => "shop_price"
 					%li
-						%a{href: "#"} Date Added
+						=link_to "Date Added", :controller => "shop", :action => "shop_date"
+		%ul.nav.navbar-nav.navbar-left
+			%li.dropdown
+				%a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
+					Pages
+					%b.caret
+				%ul.dropdown-menu
+					%li.dropdown-header All Pages:
+					%li.divider
+					- Page.order(:title).each do |page|
+						%li
+							=link_to page.title, page
 		%ul.nav.navbar-nav.navbar-right
 			%li.dropdown
 				%a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}

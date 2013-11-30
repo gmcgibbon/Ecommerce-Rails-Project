@@ -1,9 +1,10 @@
 %h2 Search Results
-.display
-	- if @games.empty?
-		%p= "Bogus, \"#{params[:keywords]}\" returned no results!"
-	- else
-		%p= "Displaying #{@count} results"
-		.display
-			= render @games
-		= paginate @games, :params => {authenticity_token: nil, utf8: nil}
+
+- term = "\"#{params[:keywords]}\""
+- if @games.empty?
+	%p= "Bogus, #{term} returned no results!"
+- else
+	%p= "Displaying #{pluralize @count, "result"} for #{term}"
+	.display
+		= render @games
+	= paginate @games, :params => {authenticity_token: nil, utf8: nil}

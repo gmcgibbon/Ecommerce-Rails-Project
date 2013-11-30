@@ -1,3 +1,31 @@
 // Place all the styles related to the Game controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+.show_game
+{
+	img
+	{
+		margin:0px auto;
+		border:10px solid #111;
+		margin-bottom:25px;
+		display:block;
+		width:40%;
+		max-width:350px;
+		min-width:250px;
+	}
+
+	button
+	{
+		margin-top: 20px;
+	}
+}
+
+.game_info
+{
+	width:40%;
+	max-width:350px;
+	min-width:250px;
+	padding:15px;
+}

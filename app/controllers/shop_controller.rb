@@ -13,17 +13,15 @@ class ShopController < ApplicationController
 		@games = (name_results+genre_results+developer_results)
 		@games += platform_results.games unless platform_results.nil?
 		@games = @games.uniq
-
-		@games = Kaminari.paginate_array(@games).page(params[:page]).per(10)
-
 		@count = @games.count
+		@games = Kaminari.paginate_array(@games).page(params[:page]).per(10)
 	end
 	def shop_platform
 		@platforms = Platform.all
 		@platform = Platform.where("name LIKE ?", "%#{params[:refined]}%").first
 	end
 	def shop_rating
-		@ratings = Games.uniq.pluck(:rating)
+		@ratings = Game.uniq.pluck(:rating)
 		@games = Game.where("rating LIKE ?", "%#{params[:refined]}%")
 	end
 	def shop_price

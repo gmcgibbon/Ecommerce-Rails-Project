@@ -1,4 +1,5 @@
 BrickWithButtons::Application.routes.draw do
+
   mount Ckeditor::Engine => '/ckeditor'
 
   devise_for :admin_users, ActiveAdmin::Devise.config
@@ -7,12 +8,18 @@ BrickWithButtons::Application.routes.draw do
   mount Ckeditor::Engine => "/ckeditor"
 
   root :to => 'shop#index', :via => :get
+
   match "/search" => "shop#search", :as => "search"
+  match "/shop/by_platform" => "shop#shop_platform", :as => "platform", :via => :get
+  match "/shop/by_rating" => "shop#shop_rating", :as => "rating", :via => :get
+  match "/shop/by_price" => "shop#shop_price", :as => "price", :via => :get
+  match "/shop/by_date" => "shop#shop_date", :as => "date", :via => :get
+
   match "/games/:id" => "game#show", :as => "game", :via => :get
+
   match "/platforms/:id" => "platform#show", :as => "platform", :via => :get
-  # match "/"    => "application#create",  :as => "create_tweet", :via => :post
-  # match "/:id" => "tweets#delete",  :as => "delete_tweet", :via => :delete
-  # match "/:id" => "tweets#display", :as => "tweet",        :via => :get
+
+  match "/pages/:id" => "page#show", :as => "page", :via => :get
 
 
   # The priority is based upon order of creation:
