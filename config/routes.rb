@@ -9,8 +9,8 @@ BrickWithButtons::Application.routes.draw do
 
   root :to => 'shop#index', :via => :get
 
-  match "/search" => "shop#search", :as => "search"
-  match "/checkout" => "shop#checkout", :as => "checkout"
+  match "/shop/search" => "shop#search", :as => "search"
+  match "/shop/checkout" => "shop#checkout", :as => "checkout"
   match "/shop/by_platform" => "shop#shop_platform", :as => "platform", :via => :get
   match "/shop/by_rating" => "shop#shop_rating", :as => "rating", :via => :get
   match "/shop/by_price" => "shop#shop_price", :as => "price", :via => :get

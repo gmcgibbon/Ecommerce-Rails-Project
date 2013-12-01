@@ -47,11 +47,12 @@
 						%li.nav-text None
 					- else
 						- @cart.each do |item|
-							%li.nav-text="#{item[:name]} x #{item[:quantity]}"
-							= button_to "X", remove_item_path(id: item[:id], name: item[:name])
-					%li= button_to "Remove all", remove_all_path unless @cart.count < 2
+							%li.nav-text
+								="#{item[:quantity]} x #{item[:name]}"
+								= button_to "X", remove_item_path(id: item[:id], name: item[:name]), :class => "btn btn-default"
+					%li.clear_cart= button_to "Remove all", remove_all_path, :class => "btn btn-default" unless @cart.count < 2
 					%li.divider
-					%li= link_to "Checkout", checkout_path unless @cart.count <1
+					%li= link_to "Checkout", checkout_path unless @cart.count < 1
 		= form_tag({:controller => "shop", :action => "search"}, {:class => "navbar-form navbar-right"}) do
 			= text_field_tag :keywords, "", {:class => "form-control col-lg-8", placeholder: "Search...", type: "text"}
 		

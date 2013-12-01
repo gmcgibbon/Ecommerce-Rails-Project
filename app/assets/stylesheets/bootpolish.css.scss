@@ -56,13 +56,11 @@ html
 
 #{headings(all)}
 {
-    
     font-family: "league";
 }
 
 h1
 {
-    
     font-family: "munro";
 }
 
@@ -77,9 +75,34 @@ img.logo
     height:60px;
 }
 
-ul.nav.navbar-nav li.nav-text
+ul.nav.navbar-nav
 {
-    padding-left:20px;
+    li.nav-text
+    {
+        padding-left:20px;
+        position:relative;
+
+        input
+        {
+            height:15px;
+            width:5px;
+            font-size:5px;
+            line-height:2px;
+            position:absolute;
+            left:-15px;
+            top:2.5px;
+        }
+    }
+
+    li.clear_cart
+    {
+        input
+        {
+            font-size:inherit;
+            margin-top:5px;
+            margin-left:20px;
+        }
+    }
 }
 
 section
