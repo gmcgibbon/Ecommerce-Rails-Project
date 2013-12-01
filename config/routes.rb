@@ -10,6 +10,7 @@ BrickWithButtons::Application.routes.draw do
   root :to => 'shop#index', :via => :get
 
   match "/search" => "shop#search", :as => "search"
+  match "/checkout" => "shop#checkout", :as => "checkout"
   match "/shop/by_platform" => "shop#shop_platform", :as => "platform", :via => :get
   match "/shop/by_rating" => "shop#shop_rating", :as => "rating", :via => :get
   match "/shop/by_price" => "shop#shop_price", :as => "price", :via => :get
@@ -21,7 +22,11 @@ BrickWithButtons::Application.routes.draw do
 
   match "/pages/:id" => "page#show", :as => "page", :via => :get
 
-
+  match "/remove_all" => "cart#remove_all", :as => "remove_all", :via => :post
+  match "/remove_item" => "cart#remove_item", :as => "remove_item", :via => :post
+  match "/add_item" => "cart#add_item", :as => "add_item", :via => :post
+  
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

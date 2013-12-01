@@ -4,4 +4,4 @@
 	= link_to game do
 		= image_tag game.box_art
 	%p= number_to_currency game.price
-	%button.btn.btn-default Add to cart
+	= button_to "Add to cart", add_item_path(id: game.id, name: game.name), :class => "btn btn-default"

@@ -1,17 +1,26 @@
 class CartController < ApplicationController
 
 	def add_item
-		session[:cart] << params[:id]
+    item = @cart.find{ |cart_item| cart_item[:id]==params[:id] }
+    if item.nil?
+      item = {:id => params[:id], :name => params[:name], :quantity => 0}
+      @cart << item
+    end
+    item[:quantity] +=1
+
     redirect_to root_url
   end
 
   def remove_item
-   	session[:cart] << params[:id]
-    	redirect_to root_url
-    end
+    @cart.delete(@cart.find{ |cart_item| cart_item[:id]==params[:id] })
 
-    def clear_items
-    	session[:cart] = nil
-    	redirect_to root_url
-    end
+    redirect_to root_url
+  end
+
+  def remove_all
+   	session[:cart] = nil
+
+    redirect_to root_url
+  end
+
 end
