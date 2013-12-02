@@ -8,13 +8,13 @@ class CartController < ApplicationController
     end
     item[:quantity] +=1
 
-    redirect_to root_url
+    redirect_to(:back)
   end
 
   def remove_item
     @cart.delete(@cart.find{ |cart_item| cart_item[:id]==params[:id] })
 
-    redirect_to root_url
+    redirect_to(:back)
   end
 
   def remove_all

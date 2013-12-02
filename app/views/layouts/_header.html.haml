@@ -32,7 +32,7 @@
 				%ul.dropdown-menu
 					%li.dropdown-header All Pages:
 					%li.divider
-					- @pages.each do |page|
+					- @all_pages.each do |page|
 						%li
 							=link_to page.title, page
 		%ul.nav.navbar-nav.navbar-right

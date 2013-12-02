@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   end
 
   def all_pages
-  	@pages = Page.order(:title)
+  	@all_pages ||= Page.order(:title)
   end
 
 end

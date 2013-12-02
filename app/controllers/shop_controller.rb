@@ -1,4 +1,5 @@
 class ShopController < ApplicationController
+	
 	def index
 		@games = Game.order(:name).limit(5)
 		@games = Kaminari.paginate_array(@games).page(params[:page]).per(5)
