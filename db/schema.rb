@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131129060811) do
+ActiveRecord::Schema.define(:version => 20131202000216) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "namespace"
@@ -76,12 +76,12 @@ ActiveRecord::Schema.define(:version => 20131129060811) do
     t.string   "last_name"
     t.string   "address"
     t.string   "city"
-    t.string   "country"
     t.string   "postal_code"
     t.string   "email"
     t.integer  "province_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.integer  "payment_method_id"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
   end
 
   create_table "games", :force => true do |t|
@@ -110,6 +110,12 @@ ActiveRecord::Schema.define(:version => 20131129060811) do
   create_table "pages", :force => true do |t|
     t.string   "title"
     t.text     "content"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "payment_methods", :force => true do |t|
+    t.text     "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

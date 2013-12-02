@@ -25,6 +25,8 @@ BrickWithButtons::Application.routes.draw do
   match "/remove_all" => "cart#remove_all", :as => "remove_all", :via => :post
   match "/remove_item" => "cart#remove_item", :as => "remove_item", :via => :post
   match "/add_item" => "cart#add_item", :as => "add_item", :via => :post
+
+  match "/new_customer" => "customer#add", :as => "add_customer", :via => :post
   
   
   # The priority is based upon order of creation:

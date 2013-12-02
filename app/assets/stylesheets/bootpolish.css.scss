@@ -86,11 +86,11 @@ ul.nav.navbar-nav
         {
             height:15px;
             width:5px;
-            font-size:5px;
-            line-height:2px;
+            font-size:6px;
             position:absolute;
-            left:-15px;
+            left:-8px;
             top:2.5px;
+            padding:8px;
         }
     }
 
@@ -101,6 +101,7 @@ ul.nav.navbar-nav
             font-size:inherit;
             margin-top:5px;
             margin-left:20px;
+            height:28px;
         }
     }
 }

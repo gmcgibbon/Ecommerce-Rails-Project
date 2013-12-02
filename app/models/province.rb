@@ -3,5 +3,5 @@ class Province < ActiveRecord::Base
 
   has_many :customer
 
-  validates :gst, :hst, :pst  :numericality => {:greater_than => 0, :less_than => 1}
+  validates :gst, :hst, :pst,  :numericality => {:greater_than => 0, :less_than => 1}
 end

@@ -5,10 +5,10 @@ class CreateCustomers < ActiveRecord::Migration
       t.string :last_name
       t.string :address
       t.string :city
-      t.string :country
       t.string :postal_code
       t.string :email
       t.references :province
+      t.references :payment_method
 
       t.timestamps
     end
