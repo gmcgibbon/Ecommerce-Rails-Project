@@ -31,16 +31,16 @@ add_game "Gears of War: Judgment", "Xbox 360"
 add_game "Batman: Arkham City", "Xbox 360"
 add_game "Final Fantasy XIII", "Playstation 3"
 
-Province.create(:name => "Manitoba")
-Province.create(:name => "Nova Scotia")
-Province.create(:name => "British Columbia")
-Province.create(:name => "Ontario")
-Province.create(:name => "Quebec")
-Province.create(:name => "Alberta")
-Province.create(:name => "Newfoundland")
-Province.create(:name => "Saskatchewan")
-Province.create(:name => "New Brunswick")
-Province.create(:name => "Prince Edward Island")
+Province.create(:name => "Manitoba", :gst => 0.05, :pst => 0.08)
+Province.create(:name => "Nova Scotia", :hst => 0.15)
+Province.create(:name => "British Columbia", :gst => 0.05, :pst => 0.07)
+Province.create(:name => "Ontario", :gst => 0.05, :pst => 0.08)
+Province.create(:name => "Quebec", :gst => 0.05, :pst => 0.0975)
+Province.create(:name => "Alberta", :gst => 0.05)
+Province.create(:name => "Newfoundland", :hst => 0.13)
+Province.create(:name => "Saskatchewan", :gst => 0.05, :pst => 0.05)
+Province.create(:name => "New Brunswick", :hst => 0.13)
+Province.create(:name => "Prince Edward Island", :gst => 0.05, :pst => 0.09)
 
 PaymentMethod.create(:name => "Credit Card")
 PaymentMethod.create(:name => "PayPal")

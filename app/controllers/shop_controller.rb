@@ -15,7 +15,7 @@ class ShopController < ApplicationController
 		@games += platform_results.games unless platform_results.nil?
 		@games = @games.uniq
 		@count = @games.count
-		@games = Kaminari.paginate_array(@games).page(params[:page]).per(10)
+		@games = Kaminari.paginate_array(@games).page(params[:page]).per(8)
 	end
 
 	def shop_platform
@@ -40,5 +40,13 @@ class ShopController < ApplicationController
 		@customer = Customer.new
 		@provinces = Province.order(:name)
 		@payment_methods = PaymentMethod.order(:name)
+		cart_items = []
+		@cart.each{|item| cart_items << Game.find(item[:id])}
+		@cart_prices = []
+		cart_items.each_index{|i| @cart_prices << cart_items[i].price * @cart[i][:quantity]}
+	end
+
+	def place_order
+		@order = Order.new
 	end
 end

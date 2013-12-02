@@ -3,5 +3,6 @@ class Province < ActiveRecord::Base
 
   has_many :customer
 
-  validates :gst, :hst, :pst,  :numericality => {:greater_than => 0, :less_than => 1}
+  validates :name, :uniqueness => true
+  validates :name, :presence => true
 end
