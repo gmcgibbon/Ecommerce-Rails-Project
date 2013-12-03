@@ -21,29 +21,33 @@ class ShopController < ApplicationController
 
 	def shop_platform
 		@platforms = Platform.all
-		@platform = Platform.where("name LIKE ?", "%#{params[:refined]}%").first
+		@platform = Platform.where("name LIKE ?", "%#{params[:platform]}%").first
 	end
 
 	def shop_rating
 		@ratings = Game.uniq.pluck(:rating)
-		@games = Game.where("rating LIKE ?", "%#{params[:refined]}%")
+		@games = Game.where("rating LIKE ?", "%#{params[:game]}%")
 	end
 
 	def shop_price
-		@games = Game.where("price LIKE ?", "%#{params[:refined]}%")
+		@games = Game.where("price LIKE ?", "%#{params[:game]}%")
 	end
 
 	def shop_date
-		@games = Game.where("date LIKE ?", "%#{params[:refined]}%")
+		@games = Game.where("date LIKE ?", "%#{params[:game]}%")
 	end
 
 	def checkout
 		redirect_to root_url if @cart.empty?
 
-		@customer = Customer.new
-		@order = Order.new
-
 		@errors = flash.now[:errors] || []
+		customer_attributes =  flash[:previous_customer] || {}
+		order_attributes =  flash[:previous_order] || {}
+
+		@customer = Customer.new customer_attributes
+		@order = Order.new order_attributes
+
+		
 
 		@payment_methods = PaymentMethod.order(:name)
 		@provinces = Province.order(:name)
@@ -89,7 +93,6 @@ class ShopController < ApplicationController
 
 						session[:errors] = nil
 						session[:cart] = nil
-						
 						flash.now[:msg] = "Your order has been processed!"
 					end
 				else
@@ -103,6 +106,9 @@ class ShopController < ApplicationController
 			errors = e.to_s.split(",")
 			errors[0] = errors.first.sub "Validation failed: ", ""
 			flash[:errors] = errors
+			attributes = @customer.attributes.except("id","created_at","updated_at","id")
+			flash[:previous_customer] = attributes
+			flash[:previous_order] = @order.attributes.slice("payment_method_id")
 			redirect_to checkout_path
 		end
 

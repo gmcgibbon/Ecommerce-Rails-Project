@@ -6,4 +6,5 @@ class CartItem < ActiveRecord::Base
 
   validates :price, :numericality    => {:greater_than_or_equal_to => 0.01}
   validates :quantity, :numericality => {:only_intger => true}
+
 end
