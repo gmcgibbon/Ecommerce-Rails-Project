@@ -10,5 +10,6 @@
   %body
     = render :partial => "layouts/header"
     %section#content
+      %p.msg= flash.now[:msg]
       = yield
     = render :partial => "layouts/footer"

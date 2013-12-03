@@ -12,7 +12,7 @@ class ShopController < ApplicationController
 		developer_results = Game.where("developer LIKE ?", "%#{params[:keywords]}%")
 		platform_results = Platform.where("name LIKE ?", "%#{params[:keywords]}%").first
 
-		@games = (name_results+genre_results+developer_results)
+		@games = (name_results + genre_results + developer_results)
 		@games += platform_results.games unless platform_results.nil?
 		@games = @games.uniq
 		@count = @games.count
@@ -38,6 +38,7 @@ class ShopController < ApplicationController
 	end
 
 	def checkout
+		redirect_to root_url if @cart.empty?
 		#render :text => session[:errors].first 
 		#render :text => session[:error_attribs].first
 		#render :text => session[:error_attribs].last
@@ -62,33 +63,45 @@ class ShopController < ApplicationController
 	end
 
 	def place_order
+		redirect_to root_url if @cart.empty?
 		@order = Order.new params[:order]
-		@customer = Customer.new params[:customer]
-		@success = false
-
-		begin
+		@customer = Customer.where("first_name LIKE '"+params[:customer][:first_name]+"'")
+												.where("last_name LIKE '"+params[:customer][:last_name]+"'")
+												.where("address LIKE '"+params[:customer][:address]+"'")
+												.where("city LIKE '"+params[:customer][:city]+"'")
+												.where("postal_code LIKE '"+params[:customer][:postal_code]+"'")
+												.where("email LIKE '"+params[:customer][:email]+"'")
+												.where("province_id LIKE '"+params[:customer][:province_id]+"'").uniq
+		@customer.empty? ? @customer = Customer.new(params[:customer]) : @customer = @customer.first
+		
+		begin 
 
 			if @customer.save
+
 				@order.customer_id = @customer.id
 				@order.status = "New"
 				@order.pst = @customer.province.pst
 				@order.gst = @customer.province.gst
 				@order.hst = @customer.province.hst
+				
 				if @order.save
 					@cart.each do |item|
 						game = Game.find(item[:id])
-						game.stock_quantity =- item[:quantity]
+						game.stock_quantity -= item[:quantity]
 
-						cart_item = @order.cart_items.build
+						cart_item = @order.cart_item.build
 						cart_item.game_id = game.id
 						cart_item.quantity = item[:quantity]
 						cart_item.price = game.price
 
 						cart_item.save
 						game.save
+
+						session[:errors] = nil
+						session[:cart] = nil
+						
+						flash.now[:msg] = "Your order has been processed!"
 					end
-					session[:errors] = nil
-					session[:cart] = nil
 				else
 					throw
 				end
@@ -96,11 +109,8 @@ class ShopController < ApplicationController
 				throw
 			end
 
-		rescue
-			render checkout_path(@customer)
-			#session[:errors] = [@customer.errors, @order.errors]
-			#session[:error_attribs] = [@customer.attributes, @order.attributes]
-			#redirect_to checkout_path
+		rescue => e
+			render :text => e
 		end
 
 	end
