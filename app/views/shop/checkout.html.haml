@@ -6,13 +6,14 @@
 	%p= "Total: #{number_to_currency @cart_prices.inject(:+)}" unless @cart.count <= 1
 
 = form_for @customer, url: {action: "place_order"} do |f|
-
+	= @customer_errors.any?
 	- if @customer.errors.any?
 		#errors
 			%p= "#{pluralize(@customer.errors.count, "error")} in order:"
 			%ul
 				- @customer.errors.full_messages.each do |msg|
 					%li= msg
+
 	%fieldset
 		%legend Customer Info
 
@@ -38,14 +39,17 @@
 			= f.label :postal_code
 			= f.text_field :postal_code
 
-	%fieldset
-		%legend Payment Method
+		= fields_for @order do |p|
 
-		.field
-			= f.label :payment_method_id
-			= f.collection_select :payment_method_id, @payment_methods, :id, :name
-	%fieldset
-		%legend Purchase
+			%fieldset
+				%legend Payment Method
 
-		.field
-			= f.submit "Place Order", :class => "btn btn-default btn-lg"
+				.field
+					= p.label :name
+					= p.collection_select :payment_method_id, @payment_methods, :id, :name
+
+		%fieldset
+			%legend Purchase
+
+			.field
+				= f.submit "Place Order", :class => "btn btn-default btn-lg"

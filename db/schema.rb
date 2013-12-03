@@ -79,9 +79,8 @@ ActiveRecord::Schema.define(:version => 20131202000216) do
     t.string   "postal_code"
     t.string   "email"
     t.integer  "province_id"
-    t.integer  "payment_method_id"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "games", :force => true do |t|
@@ -103,8 +102,9 @@ ActiveRecord::Schema.define(:version => 20131202000216) do
     t.decimal  "gst"
     t.decimal  "hst"
     t.integer  "customer_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.integer  "payment_method_id"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
   end
 
   create_table "pages", :force => true do |t|

@@ -38,7 +38,21 @@ class ShopController < ApplicationController
 	end
 
 	def checkout
-		@customer = Customer.new
+		#render :text => session[:errors].first 
+		#render :text => session[:error_attribs].first
+		#render :text => session[:error_attribs].last
+
+		@customer = Customer.new(session[:error_attribs].first) unless flash[:error_attribs].nil?
+		@customer ||= Customer.new
+		@order = Order.new(session[:error_attribs].last) unless flash[:error_attribs].nil?
+		@order ||= Order.new
+
+		@customer_errors = session[:errors].first unless flash[:errors].nil?
+		@customer_errors ||= []
+		@order_errors = session[:errors].last unless flash[:errors].nil?
+		@order_errors ||= []
+
+		@payment_methods = PaymentMethod.order(:name)
 		@provinces = Province.order(:name)
 		@payment_methods = PaymentMethod.order(:name)
 		cart_items = []
@@ -48,6 +62,46 @@ class ShopController < ApplicationController
 	end
 
 	def place_order
-		@order = Order.new
+		@order = Order.new params[:order]
+		@customer = Customer.new params[:customer]
+		@success = false
+
+		begin
+
+			if @customer.save
+				@order.customer_id = @customer.id
+				@order.status = "New"
+				@order.pst = @customer.province.pst
+				@order.gst = @customer.province.gst
+				@order.hst = @customer.province.hst
+				if @order.save
+					@cart.each do |item|
+						game = Game.find(item[:id])
+						game.stock_quantity =- item[:quantity]
+
+						cart_item = @order.cart_items.build
+						cart_item.game_id = game.id
+						cart_item.quantity = item[:quantity]
+						cart_item.price = game.price
+
+						cart_item.save
+						game.save
+					end
+					session[:errors] = nil
+					session[:cart] = nil
+				else
+					throw
+				end
+			else
+				throw
+			end
+
+		rescue
+			render checkout_path(@customer)
+			#session[:errors] = [@customer.errors, @order.errors]
+			#session[:error_attribs] = [@customer.attributes, @order.attributes]
+			#redirect_to checkout_path
+		end
+
 	end
 end

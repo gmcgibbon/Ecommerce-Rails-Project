@@ -31,16 +31,16 @@ add_game "Gears of War: Judgment", "Xbox 360"
 add_game "Batman: Arkham City", "Xbox 360"
 add_game "Final Fantasy XIII", "Playstation 3"
 
-Province.create(:name => "Manitoba", :gst => 0.05, :pst => 0.08)
+Province.create(:name => "Manitoba", :gst => 0.05, :pst => 0.08, :hst => 0.00)
 Province.create(:name => "Nova Scotia", :hst => 0.15)
-Province.create(:name => "British Columbia", :gst => 0.05, :pst => 0.07)
-Province.create(:name => "Ontario", :gst => 0.05, :pst => 0.08)
-Province.create(:name => "Quebec", :gst => 0.05, :pst => 0.0975)
-Province.create(:name => "Alberta", :gst => 0.05)
-Province.create(:name => "Newfoundland", :hst => 0.13)
-Province.create(:name => "Saskatchewan", :gst => 0.05, :pst => 0.05)
-Province.create(:name => "New Brunswick", :hst => 0.13)
-Province.create(:name => "Prince Edward Island", :gst => 0.05, :pst => 0.09)
+Province.create(:name => "British Columbia", :gst => 0.05, :pst => 0.07, :hst => 0.00)
+Province.create(:name => "Ontario", :gst => 0.05, :pst => 0.08, :hst => 0.00)
+Province.create(:name => "Quebec", :gst => 0.05, :pst => 0.0975, :hst => 0.00)
+Province.create(:name => "Alberta", :gst => 0.05, :pst => 0.00, :hst => 0.00)
+Province.create(:name => "Newfoundland", :hst => 0.13, :pst => 0.00, :gst => 0.00)
+Province.create(:name => "Saskatchewan", :gst => 0.05, :pst => 0.05, :hst => 0.00)
+Province.create(:name => "New Brunswick", :hst => 0.13, :pst => 0.00, :gst => 0.00)
+Province.create(:name => "Prince Edward Island", :gst => 0.05, :pst => 0.09, :hst => 0.00)
 
 PaymentMethod.create(:name => "Credit Card")
 PaymentMethod.create(:name => "PayPal")
