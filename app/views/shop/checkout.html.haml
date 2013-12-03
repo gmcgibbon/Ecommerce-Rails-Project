@@ -6,12 +6,11 @@
 	%p= "Total: #{number_to_currency @cart_prices.inject(:+)}" unless @cart.count <= 1
 
 = form_for @customer, url: {action: "place_order"} do |f|
-	= @customer_errors.any?
-	- if @customer.errors.any?
+	- if @errors.any?
 		#errors
-			%p= "#{pluralize(@customer.errors.count, "error")} in order:"
+			%p= "#{pluralize(@errors.count, "error")} in order form:"
 			%ul
-				- @customer.errors.full_messages.each do |msg|
+				- @errors.each do |msg|
 					%li= msg
 
 	%fieldset

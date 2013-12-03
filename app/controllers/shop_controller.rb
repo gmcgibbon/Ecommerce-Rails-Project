@@ -16,7 +16,7 @@ class ShopController < ApplicationController
 		@games += platform_results.games unless platform_results.nil?
 		@games = @games.uniq
 		@count = @games.count
-		@games = Kaminari.paginate_array(@games).page(params[:page]).per(8)
+		@games = Kaminari.paginate_array(@games).page(params[:page]).per(5)
 	end
 
 	def shop_platform
@@ -39,19 +39,11 @@ class ShopController < ApplicationController
 
 	def checkout
 		redirect_to root_url if @cart.empty?
-		#render :text => session[:errors].first 
-		#render :text => session[:error_attribs].first
-		#render :text => session[:error_attribs].last
 
-		@customer = Customer.new(session[:error_attribs].first) unless flash[:error_attribs].nil?
-		@customer ||= Customer.new
-		@order = Order.new(session[:error_attribs].last) unless flash[:error_attribs].nil?
-		@order ||= Order.new
+		@customer = Customer.new
+		@order = Order.new
 
-		@customer_errors = session[:errors].first unless flash[:errors].nil?
-		@customer_errors ||= []
-		@order_errors = session[:errors].last unless flash[:errors].nil?
-		@order_errors ||= []
+		@errors = flash.now[:errors] || []
 
 		@payment_methods = PaymentMethod.order(:name)
 		@provinces = Province.order(:name)
@@ -63,7 +55,6 @@ class ShopController < ApplicationController
 	end
 
 	def place_order
-		redirect_to root_url if @cart.empty?
 		@order = Order.new params[:order]
 		@customer = Customer.where("first_name LIKE '"+params[:customer][:first_name]+"'")
 												.where("last_name LIKE '"+params[:customer][:last_name]+"'")
@@ -76,7 +67,7 @@ class ShopController < ApplicationController
 		
 		begin 
 
-			if @customer.save
+			if @customer.save!
 
 				@order.customer_id = @customer.id
 				@order.status = "New"
@@ -87,7 +78,6 @@ class ShopController < ApplicationController
 				if @order.save
 					@cart.each do |item|
 						game = Game.find(item[:id])
-						game.stock_quantity -= item[:quantity]
 
 						cart_item = @order.cart_item.build
 						cart_item.game_id = game.id
@@ -103,14 +93,17 @@ class ShopController < ApplicationController
 						flash.now[:msg] = "Your order has been processed!"
 					end
 				else
-					throw
+					throw @order.errors
 				end
 			else
-				throw
+				throw @customer.errors
 			end
 
 		rescue => e
-			render :text => e
+			errors = e.to_s.split(",")
+			errors[0] = errors.first.sub "Validation failed: ", ""
+			flash[:errors] = errors
+			redirect_to checkout_path
 		end
 
 	end
