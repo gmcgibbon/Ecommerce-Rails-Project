@@ -64,6 +64,8 @@ module BrickWithButtons
 
     # Add CKEditor
     config.autoload_paths += %W(#{config.root}/app/models/ckeditor)
-    
+
+    # Add precompile settings
+    config.assets.initialize_on_precompile = false
   end
 end
