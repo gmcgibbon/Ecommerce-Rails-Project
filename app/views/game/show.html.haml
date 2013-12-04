@@ -9,4 +9,5 @@
 		%p= "Developer: #{@game.developer}"
 		%p= "Current Stock: #{@game.stock_quantity}"
 	= button_to "Add to cart", add_item_path(id: @game.id, name: @game.name), :class => "btn btn-default btn-lg"
+	= link_to "Back", :back
 	

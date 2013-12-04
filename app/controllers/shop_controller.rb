@@ -1,7 +1,7 @@
 class ShopController < ApplicationController
 	
 	def index
-		@games = Game.order(:name).limit(5)
+		@games = Game.order("created_at DESC").limit(5)
 		@platforms = Platform.order(:name)
 	end
 
@@ -44,7 +44,7 @@ class ShopController < ApplicationController
 	def shop_date
 		@newest = params[:date_filter][:date] == "newest" unless params[:date_filter].nil?
 		@newest ||= false
-		@newest ? @games = Game.order("price DESC") : @games = Game.order("price ASC")
+		@newest ? @games = Game.order("created_at DESC") : @games = Game.order("created_at ASC")
 		@games = Kaminari.paginate_array(@games).page(params[:page]).per(10)
 	end
 
