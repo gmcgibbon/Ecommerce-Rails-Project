@@ -1,0 +1,12 @@
+%h2 Shop by Rating
+
+= form_for "rating_filter", url: {action: "shop_rating"} do |f|
+	.field
+		= f.label "Ratings of games currently in stock"
+		= f.select :rating, @ratings.map { |value| [ value, value ] }, :selected => @rating
+	.field
+		= f.submit "Search", :class => "btn btn-default"
+
+.display
+	= render @games
+= paginate @games

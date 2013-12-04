@@ -1,0 +1,14 @@
+%h2 Shop by Date
+
+= form_for "date_filter", url: {action: "shop_date"} do |f|
+	.field
+		= f.radio_button :date, "newest", :checked => @newest
+		= f.label "Date newest to oldest"
+		= f.radio_button :date, "oldest", :checked => !@newest
+		= f.label "Date oldest to newest"
+	.field
+		= f.submit "Search", :class => "btn btn-default"
+
+.display
+	= render @games
+= paginate @games

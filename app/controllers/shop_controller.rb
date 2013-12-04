@@ -2,7 +2,6 @@ class ShopController < ApplicationController
 	
 	def index
 		@games = Game.order(:name).limit(5)
-		@games = Kaminari.paginate_array(@games).page(params[:page]).per(5)
 		@platforms = Platform.order(:name)
 	end
 
@@ -21,20 +20,32 @@ class ShopController < ApplicationController
 
 	def shop_platform
 		@platforms = Platform.all
-		@platform = Platform.where("name LIKE ?", "%#{params[:platform]}%").first
+		@platform = Platform.find params[:platform][:id] unless params[:platform].nil?
+		@platform ||= Platform.find(1)
+		@games = @platform.games
+		@games = Kaminari.paginate_array(@games).page(params[:page]).per(10)
 	end
 
 	def shop_rating
 		@ratings = Game.uniq.pluck(:rating)
-		@games = Game.where("rating LIKE ?", "%#{params[:game]}%")
+		@rating = params[:rating_filter][:rating] unless params[:rating_filter].nil?
+		@rating ||= @ratings.first
+		@games = Game.where(:rating => @rating)
+		@games = Kaminari.paginate_array(@games).page(params[:page]).per(10)
 	end
 
 	def shop_price
-		@games = Game.where("price LIKE ?", "%#{params[:game]}%")
+		@price_h_to_l = params[:price_filter][:price] == "high" unless params[:price_filter].nil?
+		@price_h_to_l ||= false
+		@price_h_to_l ? @games = Game.order("price DESC") : @games = Game.order("price ASC")
+		@games = Kaminari.paginate_array(@games).page(params[:page]).per(10)
 	end
 
 	def shop_date
-		@games = Game.where("date LIKE ?", "%#{params[:game]}%")
+		@newest = params[:date_filter][:date] == "newest" unless params[:date_filter].nil?
+		@newest ||= false
+		@newest ? @games = Game.order("price DESC") : @games = Game.order("price ASC")
+		@games = Kaminari.paginate_array(@games).page(params[:page]).per(10)
 	end
 
 	def checkout

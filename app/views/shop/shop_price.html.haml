@@ -1,0 +1,14 @@
+%h2 Shop by Price
+
+= form_for "price_filter", url: {action: "shop_price"} do |f|
+	.field
+		= f.radio_button :price, "high", :checked => @price_h_to_l
+		= f.label "Price high to low"
+		= f.radio_button :price, "low", :checked => !@price_h_to_l
+		= f.label "Price low to high"
+	.field
+		= f.submit "Search", :class => "btn btn-default"
+
+.display
+	= render @games
+= paginate @games

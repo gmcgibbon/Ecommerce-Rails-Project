@@ -10,10 +10,10 @@ BrickWithButtons::Application.routes.draw do
   match "/shop/order_placed" => "shop#place_order", :as => "order_placed", :via => :post
   match "/shop/search" => "shop#search", :as => "search", :via => [:get, :post]
   match "/shop/checkout" => "shop#checkout", :as => "checkout", :via => :get
-  match "/shop/by_platform" => "shop#shop_platform", :as => "platform", :via => :get
-  match "/shop/by_rating" => "shop#shop_rating", :as => "rating", :via => :get
-  match "/shop/by_price" => "shop#shop_price", :as => "price", :via => :get
-  match "/shop/by_date" => "shop#shop_date", :as => "date", :via => :get
+  match "/shop/by_platform" => "shop#shop_platform", :as => "shop_platform", :via => [:get, :post, :put]
+  match "/shop/by_rating" => "shop#shop_rating", :as => "shop_rating", :via => [:get, :post]
+  match "/shop/by_price" => "shop#shop_price", :as => "shop_price", :via => [:get, :post]
+  match "/shop/by_date" => "shop#shop_date", :as => "shop_date", :via => [:get, :post]
 
   match "/games/:id" => "game#show", :as => "game", :via => :get
 

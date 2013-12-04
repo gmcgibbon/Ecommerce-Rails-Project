@@ -1,0 +1,12 @@
+%h2 Shop by Platform
+
+= form_for @platform, url: {action: "shop_platform"} do |f|
+	.field
+		= f.label :name
+		= f.collection_select :id, @platforms, :id, :name
+	.field
+		= f.submit "Search", :class => "btn btn-default"
+
+.display
+	= render @games
+= paginate @games
