@@ -32,7 +32,7 @@ gem 'carrierwave'
 # gem 'money'
 gem 'kaminari'
 gem 'ckeditor'
-gem 'rmagick', '2.13.2'
+gem 'mini_magick'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
