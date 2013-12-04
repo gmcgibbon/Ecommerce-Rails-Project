@@ -1,0 +1,6 @@
+.show_platform
+	%h2= @platform.name
+
+	%p= "Manufacturer: #{@platform.manufacturer}"
+	%p= "Info: #{@platform.description}"
+= link_to "Back", :back
