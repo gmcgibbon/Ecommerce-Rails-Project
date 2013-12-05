@@ -4,6 +4,7 @@
 	- @cart.each_index do |i|
 		%p= "#{@cart[i][:name]} x #{@cart[i][:quantity]} = #{number_to_currency @cart_prices[i]}"
 	%p= "Total: #{number_to_currency @cart_prices.inject(:+)}" unless @cart.count <= 1
+	%p * Price before tax
 
 = form_for @customer, url: {action: "place_order"} do |f|
 	- if @errors.any?

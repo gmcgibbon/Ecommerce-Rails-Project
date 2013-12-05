@@ -1,4 +1,3 @@
-
 class Game < ActiveRecord::Base
   attr_accessible :box_art, :developer, :genre, :name, :price, :rating, :stock_quantity, :platform_id
 
@@ -11,4 +10,9 @@ class Game < ActiveRecord::Base
   validates :price,          :numericality => {:greater_than_or_equal_to => 0.01}
   validates :stock_quantity, :numericality => {:only_integer => true}
   validates :rating,         :format => {:with => /^(Early Childhood|Everyone|Everyone 10\+|Teen|Mature|Adults Only)$/, :message => "was not recognized. eg. Everyone 10+"}
+
+  def display_name
+  	"#{self[:name]}"
+  end
+
 end

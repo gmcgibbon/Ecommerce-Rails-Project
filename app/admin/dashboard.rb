@@ -3,10 +3,26 @@ ActiveAdmin.register_page "Dashboard" do
   menu :priority => 1, :label => proc{ I18n.t("active_admin.dashboard") }
 
   content :title => proc{ I18n.t("active_admin.dashboard") } do
-    div :class => "blank_slate_container", :id => "dashboard_default_message" do
-      span :class => "blank_slate" do
-        span I18n.t("active_admin.dashboard_welcome.welcome")
-        small I18n.t("active_admin.dashboard_welcome.call_to_action")
+    
+
+    custs = []
+    customers= Customer.all.each{|cust| custs << cust }
+
+    columns do
+      column do
+        panel "Customers With Outstanding Orders" do
+          ul do
+            custs.map do |customer|
+              li link_to("#{customer.first_name} #{customer.last_name}", admin_customer_path(customer)) do
+                ul do
+                  customer.orders.where("status LIKE 'New'").each do |order|
+                    li link_to("Outstanding Order #{order.id}", admin_order_path(order))
+                  end
+                end
+              end
+            end
+          end
+        end
       end
     end
 

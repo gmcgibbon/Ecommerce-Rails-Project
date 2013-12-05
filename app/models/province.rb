@@ -6,4 +6,8 @@ class Province < ActiveRecord::Base
   validates :gst, :hst, :pst,  :numericality => {:greater_than_or_equal_to => 0, :less_than_or_equal_to => 0.99}
   validates :name, :uniqueness => true
   validates :name, :presence => true
+
+  def display_name
+  	"#{self[:name]}"
+  end
 end

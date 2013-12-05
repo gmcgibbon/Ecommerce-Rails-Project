@@ -7,7 +7,10 @@ BrickWithButtons::Application.routes.draw do
 
   root :to => 'shop#index', :via => :get
 
+  match "/shop" => "shop#redirect_root", :via => :get
   match "/shop/order_placed" => "shop#place_order", :as => "order_placed", :via => :post
+  match "/shop/order_placed" => "shop#order_processed", :as => "paypal_order_placed", :via => :get
+  match "/shop/order/paypal" => "shop#process_paypal", :as => "process_paypal", :via => :get
   match "/shop/search" => "shop#search", :as => "search", :via => [:get, :post]
   match "/shop/checkout" => "shop#checkout", :as => "checkout", :via => :get
   match "/shop/by_platform" => "shop#shop_platform", :as => "shop_platform", :via => [:get, :post, :put]

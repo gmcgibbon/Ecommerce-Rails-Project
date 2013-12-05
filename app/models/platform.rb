@@ -5,4 +5,8 @@ class Platform < ActiveRecord::Base
 
   validates :description, :manufacturer, :name, :presence => true
   validates :name, uniqueness: true
+
+  def display_name
+  	"#{self[:name]}"
+  end
 end

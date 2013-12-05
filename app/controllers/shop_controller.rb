@@ -49,79 +49,143 @@ class ShopController < ApplicationController
 	end
 
 	def checkout
-		redirect_to root_url if @cart.empty?
+		if @cart.empty?
+			redirect_to root_url
+		else
+			@errors = flash.now[:errors] || []
+			customer_attributes =  flash[:previous_customer] || {}
+			order_attributes =  flash[:previous_order] || {}
 
-		@errors = flash.now[:errors] || []
-		customer_attributes =  flash[:previous_customer] || {}
-		order_attributes =  flash[:previous_order] || {}
+			@customer = Customer.new customer_attributes
+			@order = Order.new order_attributes
 
-		@customer = Customer.new customer_attributes
-		@order = Order.new order_attributes
-
-		
-
-		@payment_methods = PaymentMethod.order(:name)
-		@provinces = Province.order(:name)
-		@payment_methods = PaymentMethod.order(:name)
-		cart_items = []
-		@cart.each{|item| cart_items << Game.find(item[:id])}
-		@cart_prices = []
-		cart_items.each_index{|i| @cart_prices << cart_items[i].price * @cart[i][:quantity]}
+			@payment_methods = PaymentMethod.order(:name)
+			@provinces = Province.order(:name)
+			@payment_methods = PaymentMethod.order(:name)
+			cart_items = []
+			@cart.each{|item| cart_items << Game.find(item[:id])}
+			@cart_prices = []
+			cart_items.each_index{|i| @cart_prices << cart_items[i].price * @cart[i][:quantity]}
+		end
 	end
 
 	def place_order
-		@order = Order.new params[:order]
-		@customer = Customer.where("first_name LIKE '"+params[:customer][:first_name]+"'")
-												.where("last_name LIKE '"+params[:customer][:last_name]+"'")
-												.where("address LIKE '"+params[:customer][:address]+"'")
-												.where("city LIKE '"+params[:customer][:city]+"'")
-												.where("postal_code LIKE '"+params[:customer][:postal_code]+"'")
-												.where("email LIKE '"+params[:customer][:email]+"'")
-												.where("province_id LIKE '"+params[:customer][:province_id]+"'").uniq
-		@customer.empty? ? @customer = Customer.new(params[:customer]) : @customer = @customer.first
-		
-		begin 
+		if @cart.empty?
+			redirect_to root_url
+		else
+			@order = Order.new params[:order]
+			@payment_method = PaymentMethod.find(@order.payment_method_id)
+			@customer = Customer.where("first_name LIKE '"+params[:customer][:first_name]+"'")
+													.where("last_name LIKE '"+params[:customer][:last_name]+"'")
+													.where("address LIKE '"+params[:customer][:address]+"'")
+													.where("city LIKE '"+params[:customer][:city]+"'")
+													.where("postal_code LIKE '"+params[:customer][:postal_code]+"'")
+													.where("email LIKE '"+params[:customer][:email]+"'")
+													.where("province_id LIKE '"+params[:customer][:province_id]+"'").uniq
+			@customer.empty? ? @customer = Customer.new(params[:customer]) : @customer = @customer.first
+			
+			begin 
+				@total = 0.0
 
-			if @customer.save!
+				if @customer.save!
 
-				@order.customer_id = @customer.id
-				@order.status = "New"
-				@order.pst = @customer.province.pst
-				@order.gst = @customer.province.gst
-				@order.hst = @customer.province.hst
-				
-				if @order.save
-					@cart.each do |item|
-						game = Game.find(item[:id])
+					@order.customer_id = @customer.id
+					@order.status = "New"
+					@order.pst = @customer.province.pst
+					@order.gst = @customer.province.gst
+					@order.hst = @customer.province.hst
+					
+					if @order.save!
+						@cart.each do |item|
+							game = Game.find(item[:id])
 
-						cart_item = @order.cart_item.build
-						cart_item.game_id = game.id
-						cart_item.quantity = item[:quantity]
-						cart_item.price = game.price
 
-						cart_item.save
-						game.save
+							cart_item = @order.cart_items.build
+							cart_item.game_id = game.id
+							cart_item.quantity = item[:quantity]
+							cart_item.price = game.price
+							@total += game.price * item[:quantity]
+							@total += (@total * @customer.province.pst)
+							@total += (@total * @customer.province.gst)
+							@total += (@total * @customer.province.hst)
+
+							cart_item.save!
+						end
 
 						session[:errors] = nil
 						session[:cart] = nil
-						flash.now[:msg] = "Your order has been processed!"
+
+						if @order.payment_method_id == 2
+							session[:checkout_details] = {}
+							session[:checkout_details][:order] = @order.id
+							session[:checkout_details][:cust] = @customer.id
+							session[:checkout_details][:toal] = @total
+							redirect_to process_paypal_path
+						else
+							flash.now[:msg] = "Your order has been processed!"
+						end
+
+					else
+						throw @order.errors
 					end
 				else
-					throw @order.errors
+					throw @customer.errors
 				end
-			else
-				throw @customer.errors
+
+			rescue => e
+				errors = e.to_s.split(",")
+				errors[0] = errors.first.sub "Validation failed: ", ""
+				flash[:errors] = errors
+				attributes = @customer.attributes.except("id","created_at","updated_at","id")
+				flash[:previous_customer] = attributes
+				flash[:previous_order] = @order.attributes.slice("payment_method_id")
+				redirect_to checkout_path
 			end
-
-		rescue => e
-			errors = e.to_s.split(",")
-			errors[0] = errors.first.sub "Validation failed: ", ""
-			flash[:errors] = errors
-			attributes = @customer.attributes.except("id","created_at","updated_at","id")
-			flash[:previous_customer] = attributes
-			flash[:previous_order] = @order.attributes.slice("payment_method_id")
-			redirect_to checkout_path
 		end
+	end
 
+	def process_paypal
+		total = session[:checkout_details][:toal]
+		session[:req] = request = Paypal::Express::Request.new(
+		  :username   => "",
+		  :password   => "",
+		  :signature  => ""
+		  )
+		session[:pay_req] = payment_request = Paypal::Payment::Request.new(
+		  :currency_code => :CAD,
+		  :description   => "Video Game Order - Brick With Buttons",
+		  :quantity      => 1,
+		  :amount        => total
+		  )
+		response = request.setup(
+		  payment_request,
+		  paypal_order_placed_url,
+		  root_url
+		  )
+		redirect_to response.redirect_uri
+	end
+
+	def order_processed
+		@order = Order.find(session[:checkout_details][:order])
+		@customer = Customer.find(session[:checkout_details][:cust])
+		@total = session[:checkout_details][:toal]
+
+		request = session[:req]
+		payment_request = session[:pay_req]
+		flash.now[:msg] = "Your order has been processed!"
+
+		response = request.checkout!(
+  		params[:token],
+  		params[:PayerID],
+  		payment_request
+		)
+
+		session[:req] = nil
+		session[:pay_req] = nil
+		session[:checkout_details] = nil
+	end
+
+	def redirect_root
+		redirect_to root_url
 	end
 end
